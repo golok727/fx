@@ -22,7 +22,6 @@ pub enum TokenKind {
     #[display(fmt = "{}", kind)]
     Literal {
         kind: LiteralKind,
-        start: i32,
     },
 
     Comment,
@@ -200,8 +199,7 @@ impl Lexer<'_> {
 
             c @ '0'..='9' => {
                 let kind = self.number(c);
-                // todo add start
-                Literal { kind, start: 0 }
+                Literal { kind }
             }
 
             '+' => Plus,
@@ -235,11 +233,9 @@ impl Lexer<'_> {
 
             _ => Unknown,
         };
-
-        Token {
-            kind: token_kind,
-            len: 0,
-        }
+        let token = Token::new(token_kind, self.get_cur_range());
+        self.reset_range();
+        token
     }
 
     fn number(&mut self, first_digit: char) -> LiteralKind {
@@ -372,8 +368,7 @@ impl Lexer<'_> {
             Str { terminated }
         };
 
-        // TODO: implement start
-        Literal { kind, start: 0 }
+        Literal { kind }
     }
 
     fn consume_str_literal(&mut self, str_type: char) -> bool {

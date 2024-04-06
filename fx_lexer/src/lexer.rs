@@ -5,15 +5,14 @@ pub(crate) const EOF_CHAR: char = '\0';
 #[derive(Debug)]
 
 pub struct Lexer<'a> {
-    #[allow(unused)]
-    remaining_count: usize,
+    remaining_tokens: usize,
     chars: Chars<'a>,
 }
 
 impl<'a> Lexer<'a> {
     pub fn new(input: &'a str) -> Self {
         Self {
-            remaining_count: input.len(),
+            remaining_tokens: input.len(),
             chars: input.chars(),
         }
     }
@@ -46,6 +45,14 @@ impl<'a> Lexer<'a> {
     pub(crate) fn eat(&mut self) -> Option<char> {
         let c = self.chars.next()?;
         Some(c)
+    }
+
+    pub(crate) fn get_cur_range(&self) -> u32 {
+        (self.remaining_tokens - self.chars.as_str().len()) as u32
+    }
+
+    pub(crate) fn reset_range(&mut self) {
+        self.remaining_tokens = self.chars.as_str().len();
     }
 
     pub(crate) fn eat_while(&mut self, mut cb: impl FnMut(char) -> bool) {

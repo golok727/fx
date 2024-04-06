@@ -9,6 +9,6 @@ fn main() {
     let tokens = tokenize(&source);
 
     for token in tokens {
-        println!("{token}");
+        dbg!(token);
     }
 }
