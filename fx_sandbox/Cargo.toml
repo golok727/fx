@@ -1,5 +1,6 @@
 [package]
-name = "sandbox"
+name = "fx_sandbox"
+description = "A sanbox for developing fx"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -7,6 +8,6 @@ authors.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-fx_core =  { path = "../fx_core" }
+fx_core = { path = "../fx_core" }
+fx_lexer = { path = "../fx_lexer" }
 fx_std = { path = "../fx_std" }
-

@@ -4,13 +4,13 @@ members = [
   "fx_core",
   "fx_utils",
   "fx_cli",
-  "sandbox",
+  "fx_sandbox",
   "fx_lexer",
   "fx_parser",
   "fx_std",
 ]
 
-default-members = ["sandbox"]
+default-members = ["fx_sandbox"]
 
 [workspace.package]
 version = "0.1.0"
