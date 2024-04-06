@@ -1,9 +1,11 @@
 pub mod error;
 mod lexer;
 
+use derive_more::Display;
 pub use lexer::Lexer;
 
-#[derive(Debug)]
+#[derive(Debug, Display)]
+#[display(fmt = "Token -> {}", kind)]
 pub struct Token {
     pub kind: TokenKind,
     pub len: u32,
@@ -15,19 +17,17 @@ impl Token {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Display)]
 pub enum TokenKind {
-    Comment,
-
-    WhiteSpace,
-
-    Ident,
-
+    #[display(fmt = "{}", kind)]
     Literal {
         kind: LiteralKind,
         start: i32,
     },
 
+    Comment,
+    WhiteSpace,
+    Ident,
     Semi,
 
     Comma,
@@ -94,40 +94,38 @@ pub enum TokenKind {
     Eof,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Display)]
 pub enum LiteralKind {
     // 1, 3, 4, 0b100, 0o10, 0xff
-    Int {
-        base: Base,
-        empty: bool,
-    },
+    #[display(fmt = "Literal(INT: {})", base)]
+    Int { base: Base, empty: bool },
 
     // 1.2 .2, 0.3
-    Float {
-        base: Base,
-        empty_exponent: bool,
-    },
+    #[display(fmt = "Literal(FLOAT: {})", base)]
+    Float { base: Base, empty_exponent: bool },
 
     // "Hello" , 'world'
-    Str {
-        terminated: bool,
-    },
+    #[display(fmt = "Literal(STRING)")]
+    Str { terminated: bool },
 
-    /// `Hello {name}`
-    FormatStr {
-        terminated: bool,
-    },
+    /// `Hello {name}`  
+    #[display(fmt = "Literal(FORMAT_STR)")]
+    FormatStr { terminated: bool },
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Display)]
 pub enum Base {
     /// Literal starts with "0b".
+    #[display(fmt = "x2")]
     Binary = 2,
     /// Literal starts with "0o".
+    #[display(fmt = "x8")]
     Octal = 8,
     /// Literal doesn't contain a prefix.
+    #[display(fmt = "x10")]
     Decimal = 10,
     /// Literal starts with "0x".
+    #[display(fmt = "x16")]
     Hexadecimal = 16,
 }
 

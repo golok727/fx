@@ -8,3 +8,4 @@ authors.workspace = true
 
 [dependencies]
 unicode-xid = "0.2.4"
+derive_more = { workspace = true }
