@@ -7,3 +7,6 @@ authors.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+thin-vec = "0.2.13"
+derive_more = { workspace = true }
+fx_utils = { path = "../fx_utils" }
