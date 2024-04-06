@@ -1,3 +1,6 @@
 {
-	"cSpell.words": ["thiserror"]
+	"cSpell.words": ["thiserror"],
+	"[hlsl]": {
+		"editor.formatOnSave": false
+	}
 }

@@ -22,34 +22,34 @@ impl<'a> Lexer<'a> {
         self.chars.as_str()
     }
 
-    pub fn first(&self) -> char {
+    pub fn peek_next(&self) -> char {
         self.chars.clone().next().unwrap_or(EOF_CHAR)
     }
 
-    pub fn second(&self) -> char {
+    pub fn peek_next_2(&self) -> char {
         let mut iter = self.chars.clone();
         iter.next();
         iter.next().unwrap_or(EOF_CHAR)
     }
 
-    pub fn third(&self) -> char {
+    pub fn peek_next_3(&self) -> char {
         let mut iter = self.chars.clone();
         iter.next();
         iter.next();
         iter.next().unwrap_or(EOF_CHAR)
     }
 
-    pub fn is_eof(&self) -> bool {
+    pub(crate) fn is_eof(&self) -> bool {
         self.chars.as_str().is_empty()
     }
 
-    pub fn eat(&mut self) -> Option<char> {
+    pub(crate) fn eat(&mut self) -> Option<char> {
         let c = self.chars.next()?;
         Some(c)
     }
 
-    pub fn eat_while(&mut self, mut cb: impl FnMut(char) -> bool) {
-        while cb(self.first()) && !self.is_eof() {
+    pub(crate) fn eat_while(&mut self, mut cb: impl FnMut(char) -> bool) {
+        while cb(self.peek_next()) && !self.is_eof() {
             self.eat();
         }
     }
@@ -63,9 +63,9 @@ mod tests {
     #[test]
     pub fn first_second_third() {
         let lex = Lexer::new(&INPUT);
-        assert_eq!(lex.first(), 'a');
-        assert_eq!(lex.second(), 'b');
-        assert_eq!(lex.third(), 'c');
+        assert_eq!(lex.peek_next(), 'a');
+        assert_eq!(lex.peek_next_2(), 'b');
+        assert_eq!(lex.peek_next_3(), 'c');
 
         assert_eq!(lex.as_str(), INPUT);
     }

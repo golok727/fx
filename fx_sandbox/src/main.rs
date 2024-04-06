@@ -1,4 +1,4 @@
-use fx_lexer::tokenize;
+use fx_lexer::{Lexer, Token, TokenKind};
 use fx_std::fs as fx_std_file;
 
 fn main() {
@@ -6,5 +6,18 @@ fn main() {
 
     let filepath = "./unused/radha.fx";
     let source = fx_std_file::read_to_string(filepath).unwrap();
-    tokenize(&source)
+    // tokenize(&source)
+
+    let mut lex = Lexer::new(&source);
+    let mut tokens: Vec<Token> = Vec::new();
+
+    loop {
+        let token = lex.consume();
+        if token.kind == TokenKind::Eof {
+            break;
+        };
+        tokens.push(token);
+    }
+
+    dbg!(tokens);
 }
