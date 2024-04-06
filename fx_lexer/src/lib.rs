@@ -162,6 +162,10 @@ pub fn is_ident_start(c: char) -> bool {
     c == '_' || unicode_xid::UnicodeXID::is_xid_start(c)
 }
 
+pub fn can_continue_ident(c: char) -> bool {
+    unicode_xid::UnicodeXID::is_xid_continue(c)
+}
+
 use LiteralKind::*;
 use TokenKind::*;
 impl Lexer<'_> {
@@ -184,7 +188,9 @@ impl Lexer<'_> {
             },
 
             // consume string literals
-            '"' | '\'' | '`' => self.string_literal(cur_char),
+            c @ '"' | c @ '\'' | c @ '`' => self.string_literal(c),
+
+            c if is_ident_start(c) => self.identifier_or_unknown(),
 
             c @ '0'..='9' => {
                 let kind = self.number(c);
@@ -372,7 +378,7 @@ impl Lexer<'_> {
 
         while let Some(c) = self.eat() {
             match c {
-                _ if c == str_type => return false,
+                _ if c == str_type => return true,
                 '\\' if self.peek_next() == '\\' || self.peek_next() == str_type => {
                     self.eat();
                 }
@@ -380,6 +386,12 @@ impl Lexer<'_> {
             };
         }
         false
+    }
+
+    fn identifier_or_unknown(&mut self) -> TokenKind {
+        self.eat_while(can_continue_ident);
+
+        Ident
     }
 
     fn whitespace(&mut self) -> TokenKind {

@@ -16,6 +16,9 @@ fn main() {
         if token.kind == TokenKind::Eof {
             break;
         };
+        if token.kind == TokenKind::WhiteSpace {
+            continue;
+        }
         tokens.push(token);
     }
 
