@@ -131,9 +131,17 @@ pub enum Base {
     Hexadecimal = 16,
 }
 
-pub fn tokenize(input: &str) {
+pub fn tokenize(input: &str) -> impl Iterator<Item = Token> + '_ {
     #[allow(unused)]
-    let tokenizer = Lexer::new(input);
+    let mut tokenizer = Lexer::new(input);
+    std::iter::from_fn(move || {
+        let token = tokenizer.consume();
+        if token.kind != TokenKind::Eof {
+            Some(token)
+        } else {
+            None
+        }
+    })
 }
 
 pub fn is_whitespace(c: char) -> bool {
