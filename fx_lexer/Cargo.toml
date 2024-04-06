@@ -1,5 +1,5 @@
 [package]
-name = "fx-core"
+name = "fx_lexer"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

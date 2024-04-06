@@ -1,18 +1,22 @@
 [workspace]
 resolver = "2"
 members = [
-  "fx-core",
-  "fx-utils", 
-  "fx-cli", 
+  "fx_core",
+  "fx_utils",
+  "fx_cli",
+  "sandbox",
+  "fx_lexer",
+  "fx_parser",
+  "fx_std",
 ]
 
-default-members = [
-  "fx-cli"
-]
+default-members = ["sandbox"]
 
 [workspace.package]
-name = "fs"
 version = "0.1.0"
 edition = "2021"
 authors = ["Radha", "Krsna"]
 
+
+[workspace.dependencies]
+thiserror = "1.0"
