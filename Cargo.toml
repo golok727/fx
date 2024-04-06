@@ -8,6 +8,7 @@ members = [
   "fx_lexer",
   "fx_parser",
   "fx_std",
+  "fx_ast",
 ]
 
 default-members = ["fx_sandbox"]
