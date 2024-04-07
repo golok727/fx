@@ -1,4 +1,6 @@
+use super::expr;
 use super::locator::*;
+use super::stmt;
 
 #[derive(Debug, Clone)]
 pub struct Stmt {
@@ -9,25 +11,25 @@ pub struct Stmt {
 #[derive(Debug, Clone)]
 pub enum StmtKind {
     /// Functions
-    FnStmt(stmt::FnStatement),
+    FnStmt(stmt::FnStmt),
 
     /// local variable declaration
-    LocalStmt(stmt::LocalStatement),
+    LocalStmt(stmt::LocalStmt),
 
     /// if-else
-    IfStmt(stmt::IfStatement),
+    IfStmt(stmt::IfStmt),
 
     /// while-loop
-    WhileStmt(stmt::WhileStatement),
+    WhileStmt(stmt::WhileStmt),
 
     /// for-loop
-    ForStmt(stmt::ForStatement),
+    ForStmt(stmt::ForStmt),
 
     /// a block statement
-    BlockStmt(stmt::BlockStatement),
+    BlockStmt(stmt::BlockStmt),
 
     /// an expression
-    ExprStmt(stmt::ExpressionStatement),
+    ExprStmt(stmt::ExpressionStmt),
 }
 
 /// Expression
@@ -40,92 +42,32 @@ pub struct Expr {
 #[derive(Debug, Clone)]
 pub enum ExprKind {
     // foo()
-    CallExpr,
+    CallExpr(expr::CallExpr),
     //  || {}
-    ClosureExpr,
+    ClosureExpr(expr::ClosureExpr),
 
     // a.b.c()
-    MethodCall,
+    MethodCall(expr::MethodCall),
 
     // a.b.c
-    MemberExpr,
+    MemberExpr(expr::MemberExpr),
 
     // a + b
-    BinaryExpr,
+    BinaryExpr(expr::BinaryExpr),
 
     /// a = b
-    AssignmentExpr,
+    AssignmentExpr(expr::AssignmentExpr),
 
     // a++, a--
-    UpdateExpr,
+    UpdateExpr(expr::UpdateExpr),
 
     /*
     1..10
+     */
+    RangeExpr(expr::RangeExpr),
+
+    /*
     ...args
      */
-    RangeExpr,
-    VariadicExpr,
-}
-
-pub mod expression {}
-
-pub mod stmt {
-    use crate::ident::Ident;
-
-    #[derive(Debug, Clone)]
-
-    pub struct FnStatement {
-        pub id: Ident,
-        /*
-
-        pub variadic: Option<VariadicExpr>
-         pub sig: Signature {
-           inputs: Params;
-           ... stuff
-         }
-
-         pub body: BlockStmt | ExprStmt
-        */
-    }
-
-    #[derive(Debug, Clone)]
-    pub struct IfStatement {
-        /*
-         pub test: BinaryExpr,
-         pub consequent: BlockStmt | ExprStmt
-         pub alternative: BlockStmt | ExprStmt | None
-        */
-    }
-
-    #[derive(Debug, Clone)]
-    pub struct WhileStatement {
-        /*
-        pub test: BinaryExpr,
-        pub body: BlockStmt | ExprStmt
-        */
-    }
-
-    #[derive(Debug, Clone)]
-    pub struct ForStatement {}
-
-    #[derive(Debug, Clone)]
-    pub struct BlockStatement {
-        // body: Vec<Stmt>
-    }
-
-    /// Declaration of variables
-    #[derive(Debug, Clone)]
-    pub struct LocalStatement {
-        /*
-         is_const: bool
-         declarations: LocalDeclarator[]
-        */
-    }
-
-    #[derive(Debug, Clone)]
-    pub struct ExpressionStatement {
-        /*
-        expr: Expr
-        */
-    }
+    VariadicExpr(expr::VariadicExpr),
 }
